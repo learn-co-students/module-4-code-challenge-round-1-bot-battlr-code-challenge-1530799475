@@ -17,6 +17,7 @@ class BotsPage extends React.Component {
 		this.addToArmy = this.addToArmy.bind(this);
 		this.showSpecs = this.showSpecs.bind(this);
 		this.goBack = this.goBack.bind(this);
+		this.sortBy = this.sortBy.bind(this);
 	}
 
 	addToArmy(bot) {
@@ -48,6 +49,20 @@ class BotsPage extends React.Component {
 		this.setState({ specsView: null });
 	}
 
+	sortBy(feat) {
+		if (feat === "name") {
+			this.setState({
+				bots: this.state.bots
+					.slice()
+					.sort((a, b) => a.name.localeCompare(b.name))
+			});
+		} else if (feat === "health" || feat === "damage" || feat === "armor") {
+			this.setState({
+				bots: this.state.bots.slice().sort((a, b) => b[feat] - a[feat])
+			});
+		}
+	}
+
 	render() {
 		return (
 			<div>
@@ -56,6 +71,30 @@ class BotsPage extends React.Component {
 					addToArmy={this.addToArmy}
 					showSpecs={this.showSpecs}
 				/>
+				<button
+					className="ui button"
+					onClick={() => this.sortBy("name")}
+				>
+					Sort by Name
+				</button>
+				<button
+					className="ui button"
+					onClick={() => this.sortBy("health")}
+				>
+					Sort by Health
+				</button>
+				<button
+					className="ui button"
+					onClick={() => this.sortBy("damage")}
+				>
+					Sort by Damage
+				</button>
+				<button
+					className="ui button"
+					onClick={() => this.sortBy("armor")}
+				>
+					Sort by Armor
+				</button>
 				{this.state.specsView === null ? (
 					<BotCollection
 						bots={this.state.bots}
