@@ -19,13 +19,15 @@ const BotCard = props => {
       botType = <div />;
   }
 
+  function handleClick(e) {
+    e.preventDefault();
+    // props.addToArmy(bot);
+    props.showSpecs(bot);
+  }
+
   return (
     <div className="ui column">
-      <div
-        className="ui card"
-        key={bot.id}
-        onClick={() => console.log("add code to connect event listener")}
-      >
+      <div className="ui card" key={bot.id} onClick={e => handleClick(e)}>
         <div className="image">
           <img alt="oh no!" src={bot.avatar_url} />
         </div>
@@ -56,7 +58,6 @@ const BotCard = props => {
       </div>
     </div>
   );
-
 };
 
 export default BotCard;
