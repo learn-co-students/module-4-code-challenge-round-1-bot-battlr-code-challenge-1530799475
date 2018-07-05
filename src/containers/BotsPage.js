@@ -2,6 +2,7 @@ import React from "react";
 
 import BotCollection from "./BotCollection";
 import YourBotArmy from "./YourBotArmy";
+import BotSpecs from "../components/BotSpecs";
 
 const URL = "https://bot-battler-api.herokuapp.com/api/v1/bots";
 class BotsPage extends React.Component {
@@ -10,9 +11,12 @@ class BotsPage extends React.Component {
 		super(props);
 		this.state = {
 			bots: [],
-			army: []
+			army: [],
+			specsView: null
 		};
 		this.addToArmy = this.addToArmy.bind(this);
+		this.showSpecs = this.showSpecs.bind(this);
+		this.goBack = this.goBack.bind(this);
 	}
 
 	addToArmy(bot) {
@@ -23,6 +27,7 @@ class BotsPage extends React.Component {
 		} else {
 			this.setState({ army: [...this.state.army, bot] });
 		}
+		this.setState({ specsView: null });
 	}
 
 	componentDidMount() {
@@ -35,17 +40,37 @@ class BotsPage extends React.Component {
 			.then(json => this.setState({ bots: json }));
 	}
 
+	showSpecs(bot) {
+		this.setState({ specsView: bot.id });
+	}
+
+	goBack() {
+		this.setState({ specsView: null });
+	}
+
 	render() {
 		return (
 			<div>
 				<YourBotArmy
 					army={this.state.army}
 					addToArmy={this.addToArmy}
+					showSpecs={this.showSpecs}
 				/>
-				<BotCollection
-					bots={this.state.bots}
-					addToArmy={this.addToArmy}
-				/>
+				{this.state.specsView === null ? (
+					<BotCollection
+						bots={this.state.bots}
+						addToArmy={this.addToArmy}
+						showSpecs={this.showSpecs}
+					/>
+				) : (
+					<BotSpecs
+						bot={this.state.bots.find(
+							bot => bot.id === this.state.specsView
+						)}
+						goBack={this.goBack}
+						addToArmy={this.addToArmy}
+					/>
+				)}
 			</div>
 		);
 	}

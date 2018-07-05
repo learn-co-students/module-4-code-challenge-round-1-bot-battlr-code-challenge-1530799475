@@ -21,7 +21,8 @@ const BotCard = props => {
 
   function handleClick(e) {
     e.preventDefault();
-    props.addToArmy(bot);
+    // props.addToArmy(bot);
+    props.showSpecs(bot);
   }
 
   return (
